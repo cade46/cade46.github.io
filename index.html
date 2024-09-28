@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Email</title>
+</head>
+<body>
+    <h1>Send an Email</h1>
+    <form method="post" action="">
+        <label for="to">To:</label>
+        <input type="email" id="to" name="to" required><br><br>
+        <label for="subject">Subject:</label>
+        <input type="text" id="subject" name="subject" required><br><br>
+        <label for="message">Message:</label><br>
+        <textarea id="message" name="message" rows="10" cols="30" required></textarea><br><br>
+        <input type="submit" name="send" value="Send Email">
+    </form>
+
+    <?php
+    if(isset($_POST['send'])) {
+        $to = $_POST['to'];
+        $subject = $_POST['subject'];
+        $message = "
+        <html>
+        <head>
+        <title>$subject</title>
+        </head>
+        <body>
+        <p>{$_POST['message']}</p>
+        </body>
+        </html>
+        ";
+        $headers = "MIME-Version: 1.0" . "\r\n";
+        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+        $headers .= "From: sender@example.com" . "\r\n";
+
+        // Send email
+        if(mail($to, $subject, $message, $headers)) {
+            echo "Email sent successfully!";
+        } else {
+            echo "Failed to send email.";
+        }
+    }
+    ?>
+</body>
+</html>
